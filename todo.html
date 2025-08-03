@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            background: #6789aa;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+        #todo-app {
+            background: #d1b5b5;
+            padding: 30px 24px 24px 24px;
+            border-radius: 12px;
+            box-shadow: 0 10px 16px rgba(1,1,1,6);
+            min-width: 320px;
+        }
+        .input-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 0;
+        }
+        #todo-input {
+            width: 70%;
+            padding: 10px;
+            border: 1px solid #bec2cc;
+            border-radius: 6px;
+            font-size: 1rem;
+            margin-right: 0;
+        }
+        #add-btn {
+            padding: 10px 18px;
+            background: #4583c2;
+            color: #ffffff;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            display: inline-block;
+        }
+        #add-btn:hover {
+            background: #35586d;
+        }
+        #todo-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 18px;
+        }
+        #todo-list li {
+            background: #e3eafc;
+            margin-bottom: 10px;
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+    <h1>To-Do List</h1>
+    <div id="todo-app">
+        <div class="input-row">
+            <input type="text" id="todo-input" placeholder="Add a new task...">
+            <button id="add-btn">Add</button>
+        </div>
+        <ul id="todo-list"></ul>
+    </div>
+    <script>
+const input = document.getElementById('todo-input');
+const addBtn = document.getElementById('add-btn');
+const todoList = document.getElementById('todo-list');
+
+function addTask() {
+    const task = input.value.trim();
+    if (task === '') return;
+    const li = document.createElement('li');
+    // Get current date and time
+    const now = new Date();
+    const dateStr = now.toLocaleDateString();
+    const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    // Create task text
+    const taskText = document.createElement('span');
+    taskText.textContent = task + ' ';
+    taskText.style.color = '#070707'; // Task text color (change as desired)
+    taskText.style.fontWeight = 'bold';
+    // Create date/time span with color
+    const dateTimeSpan = document.createElement('span');
+    dateTimeSpan.textContent = `[${dateStr} ${timeStr}]`;
+    dateTimeSpan.style.color = '#4583c2'; // Date/time color
+    dateTimeSpan.style.fontWeight = 'bold';
+    taskText.appendChild(dateTimeSpan);
+    li.appendChild(taskText);
+    // Add a remove button
+    const removeBtn = document.createElement('button');
+    removeBtn.textContent = 'Remove';
+    removeBtn.style.marginLeft = '12px';
+    removeBtn.style.background = '#e74c3c';
+    removeBtn.style.color = '#fff';
+    removeBtn.style.border = 'none';
+    removeBtn.style.borderRadius = '4px';
+    removeBtn.style.cursor = 'pointer';
+    removeBtn.onclick = function() {
+        todoList.removeChild(li);
+    };
+    li.appendChild(removeBtn);
+    todoList.appendChild(li);
+    input.value = '';
+    input.focus();
+}
+
+addBtn.addEventListener('click', addTask);
+input.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') addTask();
+});
+    </script>
+</body>
+</html>
